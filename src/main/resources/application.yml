@@ -1,0 +1,10 @@
+#
+logging:
+  config: classpath:logback.xml
+#
+spring:
+  application:
+    name: study-springboot-mvc
+  main:
+    web-application-type: none
+    banner-mode: console
