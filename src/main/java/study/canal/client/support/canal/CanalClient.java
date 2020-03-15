@@ -27,14 +27,15 @@ public class CanalClient {
                 if (batchId == -1 || size == 0) {
                     try {
                         Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
                     }
                 } else {
+                    message.getEntries();
 //                    printEntry(message.getEntries());
                 }
-
-                connector.ack(batchId); // 提交确认
+                // 提交确认
+                connector.ack(batchId);
                 // connector.rollback(batchId); // 处理失败, 回滚数据
             }
         } catch (Exception ex) {
