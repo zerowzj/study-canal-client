@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 
 @Slf4j
-public class EntryDispatcher {
+public class CanalEntryDispatcher {
 
     /**
      * 分发器
@@ -25,15 +25,15 @@ public class EntryDispatcher {
             }
             try {
                 CanalEntry.RowChange rowChange = CanalEntry.RowChange.parseFrom(entry.getStoreValue());
+                //header
                 CanalEntry.Header header = entry.getHeader();
-                header.getSchemaName();
-                header.getTableName();
+                String logfileName = header.getLogfileName();
+                Long logfileOffset = header.getLogfileOffset();
+                String schemaName = header.getSchemaName();
+                String tableName = header.getTableName();
+                //event type
                 CanalEntry.EventType eventType = rowChange.getEventType();
-
-                System.out.println(String.format("================ binlog[%s:%s] , name[%s,%s] , eventType : %s",
-                        entry.getHeader().getLogfileName(), entry.getHeader().getLogfileOffset(),
-                        entry.getHeader().getSchemaName(), entry.getHeader().getTableName(),
-                        eventType));
+                log.info("binlog[{}:{}], name[{},{}], eventType: {}", logfileName, logfileOffset, schemaName, tableName, eventType);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

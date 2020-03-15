@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -21,16 +22,17 @@ public class CanalClient {
 
     private volatile boolean running = true;
 
+    /* 端口 */
     private int port = 11111;
-
+    /*  */
     private String destination;
-
+    /* 用户名 */
     private String username = "";
-
+    /* 密码 */
     private String password = "";
-
+    /* 过滤规则 */
     private String filter = ".*\\..*";
-
+    /* 批处理大小 */
     private int batchSize = 100;
 
     private static ConcurrentMap<String, TableHandler> tableHandlerRepository = new ConcurrentHashMap<>();
@@ -44,6 +46,7 @@ public class CanalClient {
         return tableHandlerRepository.get(name);
     }
 
+    private CanalConnector connector;
     /**
      *
      */
@@ -51,7 +54,7 @@ public class CanalClient {
         //
         InetSocketAddress address = new InetSocketAddress(AddressUtils.getHostIp(), port);
         //
-        CanalConnector connector = CanalConnectors.newSingleConnector(address, "example", username, password);
+        connector = CanalConnectors.newSingleConnector(address, "example", username, password);
         try {
             //
             connector.connect();
@@ -70,7 +73,7 @@ public class CanalClient {
                     }
                 } else {
                     log.info("batch_id={}, size={}", batchId, size);
-                    new EntryDispatcher().dispatcher(message.getEntries());
+                    new CanalEntryDispatcher().dispatcher(message.getEntries());
                 }
                 //提交确认
                 connector.ack(batchId);
@@ -81,8 +84,13 @@ public class CanalClient {
         }
     }
 
+    /**
+     *
+     */
     public void destroy() {
-
+        if (!Objects.isNull(connector)) {
+            connector.disconnect();
+        }
     }
 
     private static void printEntry(List<CanalEntry.Entry> entrys) {
