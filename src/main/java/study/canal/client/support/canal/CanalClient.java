@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @Setter
 @Getter
@@ -30,6 +32,17 @@ public class CanalClient {
     private String filter = ".*\\..*";
 
     private int batchSize = 100;
+
+    private static ConcurrentMap<String, TableHandler> tableHandlerRepository = new ConcurrentHashMap<>();
+
+    public static TableHandler registerTableHandler(String name, TableHandler tableHandler) {
+        log.info(">>>>>>>>>>> xxl-job register jobhandler success, name:{}, jobHandler:{}", name, tableHandler);
+        return tableHandlerRepository.put(name, tableHandler);
+    }
+
+    public static TableHandler loadTableHandler(String name) {
+        return tableHandlerRepository.get(name);
+    }
 
     /**
      *
@@ -57,10 +70,7 @@ public class CanalClient {
                     }
                 } else {
                     log.info("batch_id={}, size={}", batchId, size);
-//                    printEntry(message.getEntries());
-                    message.getEntries().forEach(entry -> {
-                        log.info(entry.getEntryType().name());
-                    });
+                    new EntryDispatcher().dispatcher(message.getEntries());
                 }
                 //提交确认
                 connector.ack(batchId);

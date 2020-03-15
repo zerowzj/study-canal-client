@@ -13,26 +13,29 @@ public class EntryDispatcher {
      */
     public void dispatcher(List<CanalEntry.Entry> entryLt) {
         if (entryLt == null) {
+            log.info("entry list is empty");
             return;
         }
         for (CanalEntry.Entry entry : entryLt) {
             CanalEntry.EntryType entryType = entry.getEntryType();
             if (entryType == CanalEntry.EntryType.TRANSACTIONBEGIN ||
                     entryType == CanalEntry.EntryType.TRANSACTIONEND) {
-                log.info("");
+                log.info("entry_type={}", entryType);
                 continue;
             }
             try {
                 CanalEntry.RowChange rowChange = CanalEntry.RowChange.parseFrom(entry.getStoreValue());
-                CanalEntry.EventType eventType = rowChange.getEventType();
                 CanalEntry.Header header = entry.getHeader();
+                header.getSchemaName();
+                header.getTableName();
+                CanalEntry.EventType eventType = rowChange.getEventType();
 
                 System.out.println(String.format("================ binlog[%s:%s] , name[%s,%s] , eventType : %s",
                         entry.getHeader().getLogfileName(), entry.getHeader().getLogfileOffset(),
                         entry.getHeader().getSchemaName(), entry.getHeader().getTableName(),
                         eventType));
             } catch (Exception ex) {
-
+                ex.printStackTrace();
             }
         }
     }
