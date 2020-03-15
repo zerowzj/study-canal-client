@@ -5,6 +5,7 @@ import com.alibaba.otter.canal.client.CanalConnectors;
 import com.alibaba.otter.canal.common.utils.AddressUtils;
 import com.alibaba.otter.canal.protocol.CanalEntry;
 import com.alibaba.otter.canal.protocol.Message;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +14,7 @@ import study.canal.client.support.canal.dispater.EntryDispatcher;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 @Setter
 @Getter
@@ -49,7 +49,13 @@ public class CanalClient {
 
     private CanalConnector connector;
 
-    private static ExecutorService t = Executors.newFixedThreadPool(5);
+    private static ThreadFactory THREAD_FACTORY = new ThreadFactoryBuilder()
+            .setNameFormat("pool-dispatcher-thread-%d+1")
+            .build();
+
+    private static ThreadPoolExecutor POOL = new ThreadPoolExecutor(5, 5, 0, TimeUnit.SECONDS,
+            new LinkedBlockingQueue<>(100),
+            THREAD_FACTORY);
 
     /**
      * 连接
@@ -79,7 +85,7 @@ public class CanalClient {
                     }
                 } else {
                     log.info("batch_id={}, size={}", batchId, size);
-                    t.submit(() -> {
+                    POOL.submit(() -> {
                         EntryDispatcher.dispatcher(message.getEntries());
                     }, "dispatcher-thread");
                 }
