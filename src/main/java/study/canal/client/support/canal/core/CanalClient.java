@@ -1,4 +1,4 @@
-package study.canal.client.support.canal;
+package study.canal.client.support.canal.core;
 
 import com.alibaba.otter.canal.client.CanalConnector;
 import com.alibaba.otter.canal.client.CanalConnectors;
@@ -8,12 +8,11 @@ import com.alibaba.otter.canal.protocol.Message;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import study.canal.client.support.canal.dispater.CanalEntryDispatcher;
 
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 @Setter
 @Getter
@@ -34,19 +33,20 @@ public class CanalClient {
     private String filter = ".*\\..*";
     /* 批处理大小 */
     private int batchSize = 100;
-
-    private static ConcurrentMap<String, TableHandler> tableHandlerRepository = new ConcurrentHashMap<>();
-
-    public static TableHandler registerTableHandler(String name, TableHandler tableHandler) {
-        log.info(">>>>>>>>>>> xxl-job register jobhandler success, name:{}, jobHandler:{}", name, tableHandler);
-        return tableHandlerRepository.put(name, tableHandler);
-    }
-
-    public static TableHandler loadTableHandler(String name) {
-        return tableHandlerRepository.get(name);
-    }
+//
+//    private static ConcurrentMap<String, TableHandler> tableHandlerRepository = new ConcurrentHashMap<>();
+//
+//    public static TableHandler registerTableHandler(String name, TableHandler tableHandler) {
+//        log.info(">>>>>>>>>>> xxl-job register jobhandler success, name:{}, jobHandler:{}", name, tableHandler);
+//        return tableHandlerRepository.put(name, tableHandler);
+//    }
+//
+//    public static TableHandler loadTableHandler(String name) {
+//        return tableHandlerRepository.get(name);
+//    }
 
     private CanalConnector connector;
+
     /**
      *
      */
