@@ -5,31 +5,50 @@ import com.alibaba.otter.canal.client.CanalConnectors;
 import com.alibaba.otter.canal.common.utils.AddressUtils;
 import com.alibaba.otter.canal.protocol.CanalEntry;
 import com.alibaba.otter.canal.protocol.Message;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
 import java.util.List;
 
+@Setter
+@Getter
 @Slf4j
 public class CanalClient {
 
     private volatile boolean running = true;
 
-    public void connect() {
-        InetSocketAddress address = new InetSocketAddress(AddressUtils.getHostIp(), 11111);
-        // 创建链接
-        CanalConnector connector = CanalConnectors.newSingleConnector(address, "example", "", "");
-        try {
-            connector.connect();
-            connector.subscribe(".*\\..*");
-            connector.rollback();
+    private int port = 11111;
 
+    private String destination;
+
+    private String username = "";
+
+    private String password = "";
+
+    private String filter = ".*\\..*";
+
+    private int batchSize = 100;
+
+    /**
+     *
+     */
+    public void start() {
+        //
+        InetSocketAddress address = new InetSocketAddress(AddressUtils.getHostIp(), port);
+        //
+        CanalConnector connector = CanalConnectors.newSingleConnector(address, "example", username, password);
+        try {
+            //
+            connector.connect();
+            connector.subscribe(filter);
+            connector.rollback();
+            //
             while (running) {
-//                log.info("sdafsad");
-                Message message = connector.getWithoutAck(100);
+                Message message = connector.getWithoutAck(batchSize);
                 int size = message.getEntries().size();
                 long batchId = message.getId();
-//
                 if (batchId == -1 || size == 0) {
                     try {
                         Thread.sleep(1000);
@@ -38,7 +57,10 @@ public class CanalClient {
                     }
                 } else {
                     log.info("batch_id={}, size={}", batchId, size);
-                    printEntry(message.getEntries());
+//                    printEntry(message.getEntries());
+                    message.getEntries().forEach(entry -> {
+                        log.info(entry.getEntryType().name());
+                    });
                 }
                 //提交确认
                 connector.ack(batchId);
@@ -65,7 +87,7 @@ public class CanalClient {
             }
 
             CanalEntry.EventType eventType = rowChage.getEventType();
-            System.out.println(String.format("================&gt; binlog[%s:%s] , name[%s,%s] , eventType : %s",
+            System.out.println(String.format("================ binlog[%s:%s] , name[%s,%s] , eventType : %s",
                     entry.getHeader().getLogfileName(), entry.getHeader().getLogfileOffset(),
                     entry.getHeader().getSchemaName(), entry.getHeader().getTableName(),
                     eventType));
@@ -76,9 +98,9 @@ public class CanalClient {
                 } else if (eventType == CanalEntry.EventType.INSERT) {
                     printColumn(rowData.getAfterColumnsList());
                 } else {
-                    System.out.println("-------&gt; before");
+                    System.out.println("------- before");
                     printColumn(rowData.getBeforeColumnsList());
-                    System.out.println("-------&gt; after");
+                    System.out.println("------- after");
                     printColumn(rowData.getAfterColumnsList());
                 }
             }
@@ -91,11 +113,7 @@ public class CanalClient {
         }
     }
 
-    public void shutdown() {
-        running = false;
-    }
-
     public static void main(String[] args) {
-        new CanalClient().connect();
+        new CanalClient().start();
     }
 }
