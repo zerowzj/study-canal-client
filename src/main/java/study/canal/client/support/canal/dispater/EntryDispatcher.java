@@ -6,6 +6,7 @@ import com.google.protobuf.ByteString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -16,8 +17,13 @@ public class EntryDispatcher {
             CanalEntry.EntryType.TRANSACTIONBEGIN,
             CanalEntry.EntryType.TRANSACTIONEND);
 
-    private static ExecutorService t = Executors.newFixedThreadPool(5);
+    private static ExecutorService POOL = Executors.newFixedThreadPool(5);
 
+    /**
+     * 分发
+     *
+     * @param entryLt
+     */
     public static void dispatcher(List<CanalEntry.Entry> entryLt) {
         if (entryLt == null) {
             log.info("entry list is empty");
@@ -44,7 +50,7 @@ public class EntryDispatcher {
                 CanalEntry.EventType eventType = rowChange.getEventType();
                 //row data
                 List<CanalEntry.RowData> rowDataLt = rowChange.getRowDatasList();
-                t.submit(()->{
+                POOL.submit(() -> {
                     log.info("binlog[{}:{}], name[{},{}], eventType: {}", logfileName, logfileOffset, schemaName, tableName, eventType);
                     rowDataLt.forEach(data -> {
                         List<CanalEntry.Column> beforeColumnsLt = data.getBeforeColumnsList();
@@ -55,6 +61,15 @@ public class EntryDispatcher {
             } catch (Exception ex) {
                 log.error("", ex);
             }
+        }
+    }
+
+    /**
+     * 清理
+     */
+    public static void destroy() {
+        if (!Objects.isNull(POOL)) {
+            POOL.shutdown();
         }
     }
 }
