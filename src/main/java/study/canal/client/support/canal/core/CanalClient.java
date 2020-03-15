@@ -8,7 +8,7 @@ import com.alibaba.otter.canal.protocol.Message;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import study.canal.client.support.canal.dispater.CanalEntryDispatcher;
+import study.canal.client.support.canal.dispater.EntryDispatcher;
 
 import java.net.InetSocketAddress;
 import java.util.List;
@@ -73,7 +73,7 @@ public class CanalClient {
                     }
                 } else {
                     log.info("batch_id={}, size={}", batchId, size);
-                    new CanalEntryDispatcher().dispatcher(message.getEntries());
+                    new EntryDispatcher().dispatcher(message.getEntries());
                 }
                 //提交确认
                 connector.ack(batchId);
