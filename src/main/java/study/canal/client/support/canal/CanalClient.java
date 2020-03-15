@@ -56,7 +56,7 @@ public class CanalClient {
                 continue;
             }
 
-            CanalEntry.RowChange rowChage = null;
+            CanalEntry.RowChange rowChage;
             try {
                 rowChage = CanalEntry.RowChange.parseFrom(entry.getStoreValue());
             } catch (Exception e) {
