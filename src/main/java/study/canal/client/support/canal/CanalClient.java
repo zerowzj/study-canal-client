@@ -71,6 +71,10 @@ public class CanalClient {
         }
     }
 
+    public void destroy() {
+
+    }
+
     private static void printEntry(List<CanalEntry.Entry> entrys) {
         for (CanalEntry.Entry entry : entrys) {
             if (entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONBEGIN ||
