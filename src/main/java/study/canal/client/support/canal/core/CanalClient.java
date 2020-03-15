@@ -48,46 +48,51 @@ public class CanalClient {
     private CanalConnector connector;
 
     /**
-     *
+     * 连接
      */
-    public void start() {
+    public void connect() {
         //
-        InetSocketAddress address = new InetSocketAddress(AddressUtils.getHostIp(), port);
-        //
-        connector = CanalConnectors.newSingleConnector(address, "example", username, password);
+        long batchId = 0;
         try {
+            InetSocketAddress address = new InetSocketAddress(AddressUtils.getHostIp(), port);
+            connector = CanalConnectors.newSingleConnector(address, "example", username, password);
             //
             connector.connect();
             connector.subscribe(filter);
+            //设置回滚
             connector.rollback();
             //
             while (running) {
                 Message message = connector.getWithoutAck(batchSize);
-                int size = message.getEntries().size();
-                long batchId = message.getId();
+                List<CanalEntry.Entry> entryLt = message.getEntries();
+                batchId = message.getId();
+                int size = entryLt.size();
                 if (batchId == -1 || size == 0) {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException ex) {
-                        ex.printStackTrace();
+
                     }
                 } else {
                     log.info("batch_id={}, size={}", batchId, size);
-                    new EntryDispatcher().dispatcher(message.getEntries());
+                    EntryDispatcher.dispatcher(message.getEntries());
                 }
                 //提交确认
                 connector.ack(batchId);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
-            // connector.rollback(batchId); // 处理失败, 回滚数据
+            log.info("ex: ", ex);
+            if (!Objects.isNull(connector)) {
+                //处理失败，回滚数据
+                connector.rollback(batchId);
+            }
         }
     }
 
     /**
-     *
+     * 断开连接
      */
-    public void destroy() {
+    public void disconnect() {
         if (!Objects.isNull(connector)) {
             connector.disconnect();
         }
@@ -136,6 +141,6 @@ public class CanalClient {
     }
 
     public static void main(String[] args) {
-        new CanalClient().start();
+        new CanalClient().connect();
     }
 }
