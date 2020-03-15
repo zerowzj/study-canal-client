@@ -1,5 +1,6 @@
 package study.canal.client.support.canal.core;
 
+import lombok.Getter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -18,7 +19,11 @@ public class CanalSpringClient extends CanalClient implements ApplicationContext
         super.disconnect();
     }
 
+    @Getter
+    private static ApplicationContext applicationContext;
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }
