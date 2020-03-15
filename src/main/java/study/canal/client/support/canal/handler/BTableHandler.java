@@ -4,15 +4,16 @@ public abstract class BTableHandler implements TableHandler {
 
 
     public void doHandle() {
-
         try {
-            whenUpdate();
-
             whenInsert();
 
             whenUpdate();
+
+            whenDelete();
         } catch (Exception ex) {
 
+        } finally {
+            
         }
     }
 }

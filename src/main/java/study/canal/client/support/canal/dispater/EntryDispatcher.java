@@ -6,6 +6,8 @@ import com.google.protobuf.ByteString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 public class EntryDispatcher {
@@ -13,6 +15,8 @@ public class EntryDispatcher {
     private static final List<CanalEntry.EntryType> IGNORE_ENTRY_TYPE_LT = ImmutableList.of(
             CanalEntry.EntryType.TRANSACTIONBEGIN,
             CanalEntry.EntryType.TRANSACTIONEND);
+
+    private static ExecutorService t = Executors.newFixedThreadPool(5);
 
     public static void dispatcher(List<CanalEntry.Entry> entryLt) {
         if (entryLt == null) {
@@ -40,11 +44,14 @@ public class EntryDispatcher {
                 CanalEntry.EventType eventType = rowChange.getEventType();
                 //row data
                 List<CanalEntry.RowData> rowDataLt = rowChange.getRowDatasList();
-                log.info("binlog[{}:{}], name[{},{}], eventType: {}", logfileName, logfileOffset, schemaName, tableName, eventType);
-                rowDataLt.forEach(data -> {
-                    List<CanalEntry.Column> beforeColumnsLt = data.getBeforeColumnsList();
-                    List<CanalEntry.Column> afterColumnsLt = data.getAfterColumnsList();
+                t.submit(()->{
+                    log.info("binlog[{}:{}], name[{},{}], eventType: {}", logfileName, logfileOffset, schemaName, tableName, eventType);
+                    rowDataLt.forEach(data -> {
+                        List<CanalEntry.Column> beforeColumnsLt = data.getBeforeColumnsList();
+                        List<CanalEntry.Column> afterColumnsLt = data.getAfterColumnsList();
+                    });
                 });
+
             } catch (Exception ex) {
                 log.error("", ex);
             }

@@ -13,6 +13,8 @@ import study.canal.client.support.canal.dispater.EntryDispatcher;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Setter
 @Getter
@@ -47,6 +49,8 @@ public class CanalClient {
 
     private CanalConnector connector;
 
+    private static ExecutorService t = Executors.newFixedThreadPool(5);
+
     /**
      * 连接
      */
@@ -75,7 +79,9 @@ public class CanalClient {
                     }
                 } else {
                     log.info("batch_id={}, size={}", batchId, size);
-                    EntryDispatcher.dispatcher(message.getEntries());
+                    t.submit(() -> {
+                        EntryDispatcher.dispatcher(message.getEntries());
+                    }, "dispatcher-thread");
                 }
                 //提交确认
                 connector.ack(batchId);

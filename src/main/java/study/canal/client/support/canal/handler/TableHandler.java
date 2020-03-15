@@ -2,9 +2,12 @@ package study.canal.client.support.canal.handler;
 
 public interface TableHandler {
 
-    void whenInsert();
+    default void whenInsert() {
+    }
 
-    void whenUpdate();
+    default void whenUpdate() {
+    }
 
-    void whenDelete();
+    default void whenDelete() {
+    }
 }
