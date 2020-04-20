@@ -7,10 +7,10 @@ import study.canal.client.support.canal.core.CanalSpringClient;
 
 @Slf4j
 @Configuration
-public class CanalClintCfg {
+public class CanalClientCfg {
 
     @Bean
-    public CanalSpringClient canalClient(){
+    public CanalSpringClient canalClient() {
         CanalSpringClient client = new CanalSpringClient();
         return client;
     }
