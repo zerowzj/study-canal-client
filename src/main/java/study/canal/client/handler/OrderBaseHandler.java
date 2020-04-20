@@ -33,7 +33,9 @@ public class OrderBaseHandler extends BaseTableHandler {
     protected void onUpdate(List<CanalEntry.Column> beforeColumnsLt, List<CanalEntry.Column> afterColumnsLt) {
         log.info("onUpdateonUpdate");
         afterColumnsLt.forEach(e -> {
-
+            if (e.hasUpdated()) {
+                log.info("[{}:{}]", e.getName(), e.getValue());
+            }
         });
     }
 }

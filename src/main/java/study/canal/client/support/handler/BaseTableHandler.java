@@ -29,7 +29,6 @@ public abstract class BaseTableHandler implements TableHandler {
         }
     }
 
-
     /**
      * 新增时
      *
