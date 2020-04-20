@@ -39,7 +39,7 @@ public class EntryDispatcher {
      */
     public static void dispatch(List<CanalEntry.Entry> entryLt) {
         if (entryLt == null) {
-            log.info("entry list is empty");
+            log.warn("entry list is empty");
             return;
         }
         for (CanalEntry.Entry entry : entryLt) {
@@ -48,6 +48,7 @@ public class EntryDispatcher {
                 CanalEntry.EntryType entryType = entry.getEntryType();
                 log.info("entry_type={}", entryType);
                 if (ENTRY_TYPE_IGNORE_LT.contains(entryType)) {
+                    log.warn("11");
                     continue;
                 }
 
@@ -57,14 +58,13 @@ public class EntryDispatcher {
                 Long logfileOffset = header.getLogfileOffset();
                 String schemaName = header.getSchemaName();
                 String tableName = header.getTableName();
-                log.info("bin_log[{}:{}], name[{}:{}]", logfileName, logfileOffset, schemaName, tableName);
 
                 //（★）实体存储值，即行变化：事件类型、行数据
                 ByteString byteString = entry.getStoreValue();
                 CanalEntry.RowChange rowChange = CanalEntry.RowChange.parseFrom(byteString);
                 //事件类型
                 CanalEntry.EventType eventType = rowChange.getEventType();
-                log.info("event_type[{}]", eventType);
+                log.info("bin_log[{}:{}], name[{}:{}], event_type[{}]", logfileName, logfileOffset, schemaName, tableName, eventType);
                 //行数据
                 List<CanalEntry.RowData> rowDataLt = rowChange.getRowDatasList();
 

@@ -9,7 +9,6 @@ import study.canal.client.support.canal.client.SpringCanalClient;
 @Configuration
 public class CanalClientCfg {
 
-
     @Bean
     public SpringCanalClient canalClient() {
         SpringCanalClient client = new SpringCanalClient();
