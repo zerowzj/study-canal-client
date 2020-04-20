@@ -31,7 +31,7 @@ public class TableHandlerFactory implements InitializingBean {
                     String name = bean.getClass().getAnnotation(Table.class).value();
                     TableHandler handler = (TableHandler) bean;
 
-                    registTableHandler(name, handler);
+                    registerTableHandler(name, handler);
                 }
             }
         }
@@ -39,7 +39,7 @@ public class TableHandlerFactory implements InitializingBean {
 
     private static ConcurrentMap<String, TableHandler> HANDLER_REPOSITORY = new ConcurrentHashMap<>();
 
-    public static TableHandler registTableHandler(String name, TableHandler jobHandler){
+    public static TableHandler registerTableHandler(String name, TableHandler jobHandler){
         log.info(">>>>>>>>>>> xxl-job register handler success, name:{}, jobHandler:{}", name, jobHandler);
         return HANDLER_REPOSITORY.put(name, jobHandler);
     }
