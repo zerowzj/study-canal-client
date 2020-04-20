@@ -34,7 +34,7 @@ public class EntryDispatcher {
      *
      * @param entryLt
      */
-    public static void dispatcher(List<CanalEntry.Entry> entryLt) {
+    public static void dispatch(List<CanalEntry.Entry> entryLt) {
         if (entryLt == null) {
             log.info("entry list is empty");
             return;

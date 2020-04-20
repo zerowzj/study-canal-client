@@ -1,4 +1,4 @@
-package study.canal.client.support;
+package study.canal.client.support.utils;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -12,7 +12,6 @@ public class SpringContext implements ApplicationContextAware {
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-
         this.applicationContext = applicationContext;
     }
 

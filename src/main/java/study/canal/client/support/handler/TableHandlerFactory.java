@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
-import study.canal.client.support.SpringContext;
+import study.canal.client.support.utils.SpringContext;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

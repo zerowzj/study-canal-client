@@ -95,7 +95,7 @@ public class CanalClient {
                     log.info("batch_id={}, size={}", batchId, size);
                     POOL.submit(() -> {
                         try {
-                            EntryDispatcher.dispatcher(entryLt);
+                            EntryDispatcher.dispatch(entryLt);
                         } catch (Exception ex) {
                             log.error("ex: ", ex);
                         }
