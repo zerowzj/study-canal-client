@@ -39,7 +39,7 @@ public class CanalClient {
     private CanalConnector connector;
 
     private static ThreadFactory THREAD_FACTORY = new ThreadFactoryBuilder()
-            .setNameFormat("pool-dispatcher-thread-%d")
+            .setNameFormat("POOL-DISPATCHER-THREAD-%d")
             .build();
 
     private static ThreadPoolExecutor POOL = new ThreadPoolExecutor(5, 5, 0, TimeUnit.SECONDS,
