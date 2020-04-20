@@ -6,7 +6,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
-import study.canal.client.support.utils.SpringContext;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,12 +43,11 @@ public class TableHandlerFactory implements ApplicationContextAware, Initializin
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        System.out.println("setApplicationContextsetApplicationContextsetApplicationContext");
         this.applicationContext = applicationContext;
     }
 
     public static TableHandler registerTableHandler(String name, TableHandler tableHandler) {
-        log.info(">>>>>>>>>>> register handler success, name:{}, tableHandler:{}", name, tableHandler.getClass().getName());
+        log.info(">>>>>>>>>> register handler success, {}:{}", name, tableHandler.getClass().getName());
         return HANDLER_REPOSITORY.put(name, tableHandler);
     }
 
