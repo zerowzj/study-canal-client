@@ -38,17 +38,6 @@ public class CanalClient {
     private String filter = ".*\\..*";
     /* 批处理大小 */
     private int batchSize = 100;
-//
-//    private static ConcurrentMap<String, TableHandler> tableHandlerRepository = new ConcurrentHashMap<>();
-//
-//    public static TableHandler registerTableHandler(String name, TableHandler tableHandler) {
-//        log.info(">>>>>>>>>>> xxl-job register jobhandler success, name:{}, jobHandler:{}", name, tableHandler);
-//        return tableHandlerRepository.put(name, tableHandler);
-//    }
-//
-//    public static TableHandler loadTableHandler(String name) {
-//        return tableHandlerRepository.get(name);
-//    }
 
     private CanalConnector connector;
 
