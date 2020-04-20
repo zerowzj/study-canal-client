@@ -1,4 +1,4 @@
-package study.canal.client.support;
+package study.canal.client.support.canal;
 
 import com.alibaba.otter.canal.protocol.CanalEntry;
 import lombok.Getter;

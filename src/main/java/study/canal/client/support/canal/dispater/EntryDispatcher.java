@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.protobuf.ByteString;
 import lombok.extern.slf4j.Slf4j;
-import study.canal.client.support.EntryContext;
+import study.canal.client.support.canal.EntryContext;
 import study.canal.client.support.blogic.BLogic;
 import study.canal.client.support.blogic.BLogicFactory;
 
