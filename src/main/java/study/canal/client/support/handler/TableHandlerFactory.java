@@ -1,8 +1,10 @@
 package study.canal.client.support.handler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
 import study.canal.client.support.utils.SpringContext;
 
@@ -12,7 +14,7 @@ import java.util.concurrent.ConcurrentMap;
 
 @Slf4j
 @Configuration
-public class TableHandlerFactory implements InitializingBean {
+public class TableHandlerFactory implements ApplicationContextAware, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -20,7 +22,7 @@ public class TableHandlerFactory implements InitializingBean {
     }
 
     private void initTableHandlerRepository() {
-        ApplicationContext applicationContext = SpringContext.getApplicationContext();
+        ApplicationContext applicationContext =SpringContext.getApplicationContext();
         if (applicationContext == null) {
             return;
         }
@@ -36,6 +38,17 @@ public class TableHandlerFactory implements InitializingBean {
             }
         }
     }
+
+
+
+    private static ApplicationContext applicationContext;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        System.out.println("setApplicationContextsetApplicationContextsetApplicationContext");
+        this.applicationContext = applicationContext;
+    }
+
 
     private static ConcurrentMap<String, TableHandler> HANDLER_REPOSITORY = new ConcurrentHashMap<>();
 
