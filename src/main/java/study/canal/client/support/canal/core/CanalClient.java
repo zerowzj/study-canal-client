@@ -67,36 +67,45 @@ public class CanalClient {
         //
         long batchId = 0;
         try {
+            //连接器
             InetSocketAddress address = new InetSocketAddress(AddressUtils.getHostIp(), port);
             connector = CanalConnectors.newSingleConnector(address, "example", username, password);
-            //
+            //连接
             connector.connect();
+            //订阅
             connector.subscribe(filter);
             //设置回滚
             connector.rollback();
+
             //
             while (running) {
                 Message message = connector.getWithoutAck(batchSize);
                 List<CanalEntry.Entry> entryLt = message.getEntries();
+                //批次id
                 batchId = message.getId();
+                //实体数量
                 int size = entryLt.size();
                 if (batchId == -1 || size == 0) {
                     try {
-                        Thread.sleep(1000);
+                        TimeUnit.MILLISECONDS.sleep(1000);
                     } catch (InterruptedException ex) {
-
+                        log.error("ex: ", ex);
                     }
                 } else {
                     log.info("batch_id={}, size={}", batchId, size);
                     POOL.submit(() -> {
-                        EntryDispatcher.dispatcher(entryLt);
+                        try {
+                            EntryDispatcher.dispatcher(entryLt);
+                        } catch (Exception ex) {
+                            log.error("ex: ", ex);
+                        }
                     });
                 }
                 //提交确认
                 connector.ack(batchId);
             }
         } catch (Exception ex) {
-            log.info("ex: ", ex);
+            log.error("ex: ", ex);
             if (!Objects.isNull(connector)) {
                 //处理失败，回滚数据
                 connector.rollback(batchId);

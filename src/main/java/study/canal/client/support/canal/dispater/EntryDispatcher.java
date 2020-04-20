@@ -40,25 +40,26 @@ public class EntryDispatcher {
             return;
         }
         for (CanalEntry.Entry entry : entryLt) {
-            //entry type
+            //实体类型
             CanalEntry.EntryType entryType = entry.getEntryType();
             if (IGNORE_ENTRY_TYPE_LT.contains(entryType)) {
                 log.info("entry type={}", entryType);
                 continue;
             }
             try {
-                //row change
-                ByteString byteString = entry.getStoreValue();
-                CanalEntry.RowChange rowChange = CanalEntry.RowChange.parseFrom(byteString);
-                //header
+                //实体头部
                 CanalEntry.Header header = entry.getHeader();
                 String logfileName = header.getLogfileName();
                 Long logfileOffset = header.getLogfileOffset();
                 String schemaName = header.getSchemaName();
                 String tableName = header.getTableName();
-                //event type
+
+                //行变化，包括：事件类型、行数据
+                ByteString byteString = entry.getStoreValue();
+                CanalEntry.RowChange rowChange = CanalEntry.RowChange.parseFrom(byteString);
+                //事件类型
                 CanalEntry.EventType eventType = rowChange.getEventType();
-                //row data
+                //行数据
                 List<CanalEntry.RowData> rowDataLt = rowChange.getRowDatasList();
                 POOL.submit(() -> {
                     log.info("binlog[{}:{}], name[{},{}], eventType: {}", logfileName, logfileOffset, schemaName, tableName, eventType);
