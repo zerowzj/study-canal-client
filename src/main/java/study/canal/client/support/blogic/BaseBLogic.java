@@ -29,31 +29,12 @@ public abstract class BaseBLogic implements BLogic {
         }
     }
 
-    /**
-     * 新增时
-     *
-     * @param entryContext
-     * @param afterColumnsLt
-     */
     protected void onInsert(List<CanalEntry.Column> afterColumnsLt) {
     }
 
-    /**
-     * 删除时
-     *
-     * @param entryContext
-     * @param beforeColumnsLt
-     */
     protected void onDelete(List<CanalEntry.Column> beforeColumnsLt) {
     }
 
-    /**
-     * 更新时
-     *
-     * @param entryContext
-     * @param beforeColumnsLt
-     * @param afterColumnsLt
-     */
     protected void onUpdate(List<CanalEntry.Column> beforeColumnsLt, List<CanalEntry.Column> afterColumnsLt) {
     }
 }
