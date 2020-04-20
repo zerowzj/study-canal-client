@@ -23,7 +23,7 @@ public class CanalClient {
 
     private volatile boolean running = true;
 
-    /* 端口 */
+    /* 监听端口 */
     private int port = 11111;
     /*  */
     private String destination;
@@ -33,7 +33,7 @@ public class CanalClient {
     private String password = "";
     /* 过滤规则 */
     private String filter = ".*\\..*";
-    /* 批处理大小 */
+    /* 处理批大小 */
     private int batchSize = 100;
 
     private CanalConnector connector;
