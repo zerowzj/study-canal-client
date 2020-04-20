@@ -40,35 +40,37 @@ public class EntryDispatcher {
             return;
         }
         for (CanalEntry.Entry entry : entryLt) {
-            //实体类型
-            CanalEntry.EntryType entryType = entry.getEntryType();
-            if (IGNORE_ENTRY_TYPE_LT.contains(entryType)) {
-                log.info("entry type={}", entryType);
-                continue;
-            }
             try {
-                //实体头部
+                //（★）实体类型
+                CanalEntry.EntryType entryType = entry.getEntryType();
+                log.info("entry type={}", entryType);
+                if (IGNORE_ENTRY_TYPE_LT.contains(entryType)) {
+                    continue;
+                }
+
+                //（★）实体头部
                 CanalEntry.Header header = entry.getHeader();
                 String logfileName = header.getLogfileName();
                 Long logfileOffset = header.getLogfileOffset();
+                log.info("bin_log[{}:{}]", logfileName, logfileOffset);
                 String schemaName = header.getSchemaName();
                 String tableName = header.getTableName();
+                log.info("name[{}:{}]", schemaName, tableName);
 
-                //行变化，包括：事件类型、行数据
+                //（★）实体存储值，即行变化：事件类型、行数据
                 ByteString byteString = entry.getStoreValue();
                 CanalEntry.RowChange rowChange = CanalEntry.RowChange.parseFrom(byteString);
                 //事件类型
                 CanalEntry.EventType eventType = rowChange.getEventType();
+                log.info("eventType: {}", eventType);
                 //行数据
                 List<CanalEntry.RowData> rowDataLt = rowChange.getRowDatasList();
                 POOL.submit(() -> {
-                    log.info("binlog[{}:{}], name[{},{}], eventType: {}", logfileName, logfileOffset, schemaName, tableName, eventType);
                     rowDataLt.forEach(data -> {
-                        List<CanalEntry.Column> beforeColumnsLt = data.getBeforeColumnsList();
-                        List<CanalEntry.Column> afterColumnsLt = data.getAfterColumnsList();
+                        List<CanalEntry.Column> beforeColumnLt = data.getBeforeColumnsList();
+                        List<CanalEntry.Column> afterColumnLt = data.getAfterColumnsList();
                     });
                 });
-
             } catch (Exception ex) {
                 log.error("", ex);
             }
@@ -76,7 +78,7 @@ public class EntryDispatcher {
     }
 
     /**
-     * 清理
+     * 销毁
      */
     public static void destroy() {
         if (!Objects.isNull(POOL)) {
