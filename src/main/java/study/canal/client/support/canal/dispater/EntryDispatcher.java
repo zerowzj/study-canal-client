@@ -77,7 +77,7 @@ public class EntryDispatcher {
                     List<CanalEntry.Column> beforeColumnsLt = data.getBeforeColumnsList();
                     List<CanalEntry.Column> afterColumnsLt = data.getAfterColumnsList();
 
-                    tableHandler.doHandle(beforeColumnsLt, afterColumnsLt);
+                    tableHandler.doHandle(eventType, beforeColumnsLt, afterColumnsLt);
                 });
             } catch (Exception ex) {
                 log.error("", ex);

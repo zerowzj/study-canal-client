@@ -22,11 +22,10 @@ public class TableHandlerFactory implements ApplicationContextAware, Initializin
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        initTableHandlerRepository();
+        initTableHandlerRepository(applicationContext);
     }
 
-    private void initTableHandlerRepository() {
-        ApplicationContext applicationContext =SpringContext.getApplicationContext();
+    private void initTableHandlerRepository(ApplicationContext applicationContext) {
         if (applicationContext == null) {
             return;
         }

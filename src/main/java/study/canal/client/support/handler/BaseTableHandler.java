@@ -9,13 +9,13 @@ import java.util.List;
 public abstract class BaseTableHandler implements TableHandler {
 
     @Override
-    public final void doHandle(List<CanalEntry.Column> beforeColumnsLt, List<CanalEntry.Column> afterColumnsLt) {
+    public final void doHandle(CanalEntry.EventType eventType, List<CanalEntry.Column> beforeColumnsLt, List<CanalEntry.Column> afterColumnsLt) {
         try {
-            if (beforeColumnsLt == null) {
+            if (eventType == CanalEntry.EventType.INSERT) {
                 onInsert(afterColumnsLt);
-            } else if (afterColumnsLt == null) {
+            } else if (eventType == CanalEntry.EventType.DELETE) {
                 onDelete(beforeColumnsLt);
-            } else if (1 == 1) {
+            } else if (eventType == CanalEntry.EventType.UPDATE) {
                 onUpdate(beforeColumnsLt, afterColumnsLt);
             }
         } catch (Exception ex) {

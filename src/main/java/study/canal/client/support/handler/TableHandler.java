@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface TableHandler {
 
-    void doHandle(List<CanalEntry.Column> beforeColumnsLt, List<CanalEntry.Column> afterColumnsLt);
+    void doHandle(CanalEntry.EventType eventType, List<CanalEntry.Column> beforeColumnsLt, List<CanalEntry.Column> afterColumnsLt);
 }
