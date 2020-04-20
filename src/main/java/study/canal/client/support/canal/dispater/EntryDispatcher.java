@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.protobuf.ByteString;
 import lombok.extern.slf4j.Slf4j;
+import study.canal.client.support.Context;
 import study.canal.client.support.handler.TableHandler;
 import study.canal.client.support.handler.TableHandlerFactory;
 
@@ -73,11 +74,11 @@ public class EntryDispatcher {
                     log.warn("not found handler of table[{}]", tableName);
                     continue;
                 }
+                Context context = new Context(schemaName, tableName, eventType);
                 rowDataLt.forEach(data -> {
                     List<CanalEntry.Column> beforeColumnsLt = data.getBeforeColumnsList();
                     List<CanalEntry.Column> afterColumnsLt = data.getAfterColumnsList();
-
-                    tableHandler.doHandle(eventType, beforeColumnsLt, afterColumnsLt);
+                    tableHandler.doHandle(context, beforeColumnsLt, afterColumnsLt);
                 });
             } catch (Exception ex) {
                 log.error("", ex);

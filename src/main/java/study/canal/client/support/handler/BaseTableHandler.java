@@ -2,6 +2,7 @@ package study.canal.client.support.handler;
 
 import com.alibaba.otter.canal.protocol.CanalEntry;
 import lombok.extern.slf4j.Slf4j;
+import study.canal.client.support.Context;
 
 import java.util.List;
 
@@ -9,8 +10,9 @@ import java.util.List;
 public abstract class BaseTableHandler implements TableHandler {
 
     @Override
-    public final void doHandle(CanalEntry.EventType eventType, List<CanalEntry.Column> beforeColumnsLt, List<CanalEntry.Column> afterColumnsLt) {
+    public final void doHandle(Context context, List<CanalEntry.Column> beforeColumnsLt, List<CanalEntry.Column> afterColumnsLt) {
         try {
+            CanalEntry.EventType eventType = context.getEventType();
             if (eventType == CanalEntry.EventType.INSERT) {
                 onInsert(afterColumnsLt);
             } else if (eventType == CanalEntry.EventType.DELETE) {

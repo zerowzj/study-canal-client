@@ -24,4 +24,9 @@ public class DemoHandler extends BaseTableHandler {
         });
         log.info("ffffffffffffffffffffffffdsa");
     }
+
+    @Override
+    protected void onUpdate(List<CanalEntry.Column> beforeColumnsLt, List<CanalEntry.Column> afterColumnsLt) {
+        log.info("ffffffffffffffffffffffffdsa");
+    }
 }
