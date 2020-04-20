@@ -4,7 +4,7 @@ import com.alibaba.otter.canal.protocol.CanalEntry;
 
 import java.util.List;
 
-public abstract class BaseTblHandler implements TblHandler {
+public abstract class BaseTableHandler implements TableHandler {
 
     public final void doHandle(List<CanalEntry.Column> beforeColumnsLt,
                                List<CanalEntry.Column> afterColumnsLt) {

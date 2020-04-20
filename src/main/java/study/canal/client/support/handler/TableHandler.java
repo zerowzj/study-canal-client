@@ -1,7 +1,6 @@
 package study.canal.client.support.handler;
 
-public interface TblHandler {
-
+public interface TableHandler {
 
     default void whenInsert() {
     }
