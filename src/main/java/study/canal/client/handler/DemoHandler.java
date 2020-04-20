@@ -12,12 +12,12 @@ import java.util.List;
 public class DemoHandler extends BaseTableHandler {
 
     @Override
-    protected void handleInsert(List<CanalEntry.Column> afterColumnsLt) {
-        super.handleInsert(afterColumnsLt);
+    protected void onInsert(List<CanalEntry.Column> afterColumnsLt) {
+        super.onInsert(afterColumnsLt);
     }
 
     @Override
-    protected void handleDelete(List<CanalEntry.Column> beforeColumnsLt) {
-        super.handleDelete(beforeColumnsLt);
+    protected void onDelete(List<CanalEntry.Column> beforeColumnsLt) {
+        super.onDelete(beforeColumnsLt);
     }
 }

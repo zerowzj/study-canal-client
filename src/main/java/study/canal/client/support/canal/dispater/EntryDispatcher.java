@@ -5,6 +5,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.protobuf.ByteString;
 import lombok.extern.slf4j.Slf4j;
+import study.canal.client.support.handler.TableHandler;
+import study.canal.client.support.handler.TableHandlerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +45,7 @@ public class EntryDispatcher {
             try {
                 //（★）实体类型
                 CanalEntry.EntryType entryType = entry.getEntryType();
-                log.info("entry type={}", entryType);
+                log.info("entry_type={}", entryType);
                 if (IGNORE_ENTRY_TYPE_LT.contains(entryType)) {
                     continue;
                 }
@@ -62,14 +64,20 @@ public class EntryDispatcher {
                 CanalEntry.RowChange rowChange = CanalEntry.RowChange.parseFrom(byteString);
                 //事件类型
                 CanalEntry.EventType eventType = rowChange.getEventType();
-                log.info("eventType: {}", eventType);
+                log.info("event_type[{}]", eventType);
                 //行数据
                 List<CanalEntry.RowData> rowDataLt = rowChange.getRowDatasList();
-                POOL.submit(() -> {
-                    rowDataLt.forEach(data -> {
-                        List<CanalEntry.Column> beforeColumnsLt = data.getBeforeColumnsList();
-                        List<CanalEntry.Column> afterColumnsLt = data.getAfterColumnsList();
-                    });
+
+                TableHandler tableHandler = TableHandlerFactory.loadTableHandler(tableName);
+                if(tableHandler == null){
+                    log.warn("忽略{}", tableName);
+                    continue;
+                }
+                rowDataLt.forEach(data -> {
+                    List<CanalEntry.Column> beforeColumnsLt = data.getBeforeColumnsList();
+                    List<CanalEntry.Column> afterColumnsLt = data.getAfterColumnsList();
+
+                    tableHandler.doHandle(beforeColumnsLt, afterColumnsLt);
                 });
             } catch (Exception ex) {
                 log.error("", ex);

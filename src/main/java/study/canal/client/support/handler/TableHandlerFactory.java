@@ -40,11 +40,11 @@ public class TableHandlerFactory implements InitializingBean {
     private static ConcurrentMap<String, TableHandler> HANDLER_REPOSITORY = new ConcurrentHashMap<>();
 
     public static TableHandler registerTableHandler(String name, TableHandler jobHandler){
-        log.info(">>>>>>>>>>> xxl-job register handler success, name:{}, jobHandler:{}", name, jobHandler);
+        log.info(">>>>>>>>>>> register handler success, name:{}, tableHandler:{}", name, jobHandler);
         return HANDLER_REPOSITORY.put(name, jobHandler);
     }
 
-    public static TableHandler loadJobHandler(String name){
+    public static TableHandler loadTableHandler(String name) {
         return HANDLER_REPOSITORY.get(name);
     }
 }
