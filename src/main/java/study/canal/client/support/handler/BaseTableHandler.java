@@ -2,7 +2,7 @@ package study.canal.client.support.handler;
 
 import com.alibaba.otter.canal.protocol.CanalEntry;
 import lombok.extern.slf4j.Slf4j;
-import study.canal.client.support.Context;
+import study.canal.client.support.EntryContext;
 
 import java.util.List;
 
@@ -10,11 +10,11 @@ import java.util.List;
 public abstract class BaseTableHandler implements TableHandler {
 
     @Override
-    public final void doHandle(Context context,
+    public final void doHandle(EntryContext entryContext,
                                List<CanalEntry.Column> beforeColumnsLt,
                                List<CanalEntry.Column> afterColumnsLt) {
         try {
-            CanalEntry.EventType eventType = context.getEventType();
+            CanalEntry.EventType eventType = entryContext.getEventType();
             if (eventType == CanalEntry.EventType.INSERT) {
                 onInsert(afterColumnsLt);
             } else if (eventType == CanalEntry.EventType.DELETE) {
@@ -23,7 +23,7 @@ public abstract class BaseTableHandler implements TableHandler {
                 onUpdate(beforeColumnsLt, afterColumnsLt);
             }
         } catch (Exception ex) {
-
+            log.error("", ex);
         } finally {
             log.info("");
         }
@@ -32,6 +32,7 @@ public abstract class BaseTableHandler implements TableHandler {
     /**
      * 新增时
      *
+     * @param entryContext
      * @param afterColumnsLt
      */
     protected void onInsert(List<CanalEntry.Column> afterColumnsLt) {
@@ -40,6 +41,7 @@ public abstract class BaseTableHandler implements TableHandler {
     /**
      * 删除时
      *
+     * @param entryContext
      * @param beforeColumnsLt
      */
     protected void onDelete(List<CanalEntry.Column> beforeColumnsLt) {
@@ -48,6 +50,7 @@ public abstract class BaseTableHandler implements TableHandler {
     /**
      * 更新时
      *
+     * @param entryContext
      * @param beforeColumnsLt
      * @param afterColumnsLt
      */

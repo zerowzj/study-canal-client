@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class Context {
+public class EntryContext {
 
     private String schemaName;
 
@@ -14,7 +14,7 @@ public class Context {
 
     private CanalEntry.EventType eventType;
 
-    public Context(String schemaName, String tableName, CanalEntry.EventType eventType) {
+    public EntryContext(String schemaName, String tableName, CanalEntry.EventType eventType) {
         this.schemaName = schemaName;
         this.tableName = tableName;
         this.eventType = eventType;
