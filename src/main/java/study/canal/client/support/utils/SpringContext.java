@@ -3,7 +3,6 @@ package study.canal.client.support.utils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,7 +12,7 @@ public class SpringContext implements ApplicationContextAware {
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        System.out.println("setApplicationContextsetApplicationContextsetApplicationContext");
+        System.out.println("111111111setApplicationContextsetApplicationContextsetApplicationContext");
         this.applicationContext = applicationContext;
     }
 

@@ -16,6 +16,10 @@ import java.util.concurrent.ConcurrentMap;
 @Configuration
 public class TableHandlerFactory implements ApplicationContextAware, InitializingBean {
 
+    private static ConcurrentMap<String, TableHandler> HANDLER_REPOSITORY = new ConcurrentHashMap<>();
+
+    private static ApplicationContext applicationContext;
+
     @Override
     public void afterPropertiesSet() throws Exception {
         initTableHandlerRepository();
@@ -39,22 +43,15 @@ public class TableHandlerFactory implements ApplicationContextAware, Initializin
         }
     }
 
-
-
-    private static ApplicationContext applicationContext;
-
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         System.out.println("setApplicationContextsetApplicationContextsetApplicationContext");
         this.applicationContext = applicationContext;
     }
 
-
-    private static ConcurrentMap<String, TableHandler> HANDLER_REPOSITORY = new ConcurrentHashMap<>();
-
-    public static TableHandler registerTableHandler(String name, TableHandler jobHandler){
-        log.info(">>>>>>>>>>> register handler success, name:{}, tableHandler:{}", name, jobHandler);
-        return HANDLER_REPOSITORY.put(name, jobHandler);
+    public static TableHandler registerTableHandler(String name, TableHandler tableHandler) {
+        log.info(">>>>>>>>>>> register handler success, name:{}, tableHandler:{}", name, tableHandler.getClass().getName());
+        return HANDLER_REPOSITORY.put(name, tableHandler);
     }
 
     public static TableHandler loadTableHandler(String name) {

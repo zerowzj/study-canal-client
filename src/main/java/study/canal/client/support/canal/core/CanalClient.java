@@ -14,10 +14,7 @@ import study.canal.client.support.canal.dispater.EntryDispatcher;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @Setter
 @Getter
@@ -159,6 +156,8 @@ public class CanalClient {
     }
 
     public static void main(String[] args) {
-        new CanalClient().connect();
+        Executors.newSingleThreadExecutor().execute(() -> {
+            new CanalClient().connect();
+        });
     }
 }

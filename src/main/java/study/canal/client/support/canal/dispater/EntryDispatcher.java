@@ -70,7 +70,7 @@ public class EntryDispatcher {
 
                 TableHandler tableHandler = TableHandlerFactory.loadTableHandler(tableName);
                 if(tableHandler == null){
-                    log.warn("忽略{}", tableName);
+                    log.warn("not found handler of table[{}]", tableName);
                     continue;
                 }
                 rowDataLt.forEach(data -> {
