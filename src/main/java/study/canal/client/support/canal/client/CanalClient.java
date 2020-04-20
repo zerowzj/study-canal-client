@@ -31,8 +31,9 @@ public class CanalClient {
     private String username = "";
     /* 密码 */
     private String password = "";
-    /* 过滤规则 */
-    private String filter = ".*\\..*";
+    /* 过滤规则 -订阅所有库下面的所有表*/
+//    private String filter = ".*\\..*";
+    private String filter = "ds_ms\\…*";
     /* 处理批大小 */
     private int batchSize = 100;
 
@@ -64,6 +65,7 @@ public class CanalClient {
             connector.rollback();
 
             while (running) {
+                //获取指定数量的数据
                 Message message = connector.getWithoutAck(batchSize);
                 List<CanalEntry.Entry> entryLt = message.getEntries();
                 //批次id
