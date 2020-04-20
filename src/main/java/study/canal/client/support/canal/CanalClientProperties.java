@@ -1,4 +1,4 @@
-package study.canal.client.support.canal.core;
+package study.canal.client.support.canal;
 
 import lombok.Getter;
 import lombok.Setter;

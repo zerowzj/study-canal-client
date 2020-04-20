@@ -1,4 +1,4 @@
-package study.canal.client.support.canal.core;
+package study.canal.client.support.canal.client;
 
 import com.alibaba.otter.canal.client.CanalConnector;
 import com.alibaba.otter.canal.client.CanalConnectors;
@@ -63,7 +63,6 @@ public class CanalClient {
             //设置回滚
             connector.rollback();
 
-            //
             while (running) {
                 Message message = connector.getWithoutAck(batchSize);
                 List<CanalEntry.Entry> entryLt = message.getEntries();
