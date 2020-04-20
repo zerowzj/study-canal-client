@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class EntryDispatcher {
 
-    private static final List<CanalEntry.EntryType> IGNORE_ENTRY_TYPE_LT = ImmutableList.of(
+    private static final List<CanalEntry.EntryType> ENTRY_TYPE_IGNORE_LT = ImmutableList.of(
             CanalEntry.EntryType.TRANSACTIONBEGIN,
             CanalEntry.EntryType.TRANSACTIONEND);
 
@@ -47,7 +47,7 @@ public class EntryDispatcher {
                 //（★）实体类型
                 CanalEntry.EntryType entryType = entry.getEntryType();
                 log.info("entry_type={}", entryType);
-                if (IGNORE_ENTRY_TYPE_LT.contains(entryType)) {
+                if (ENTRY_TYPE_IGNORE_LT.contains(entryType)) {
                     continue;
                 }
 
@@ -55,10 +55,9 @@ public class EntryDispatcher {
                 CanalEntry.Header header = entry.getHeader();
                 String logfileName = header.getLogfileName();
                 Long logfileOffset = header.getLogfileOffset();
-                log.info("bin_log[{}:{}]", logfileName, logfileOffset);
                 String schemaName = header.getSchemaName();
                 String tableName = header.getTableName();
-                log.info("name[{}:{}]", schemaName, tableName);
+                log.info("bin_log[{}:{}], name[{}:{}]", logfileName, logfileOffset, schemaName, tableName);
 
                 //（★）实体存储值，即行变化：事件类型、行数据
                 ByteString byteString = entry.getStoreValue();

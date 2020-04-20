@@ -15,18 +15,18 @@ public class DemoHandler extends BaseTableHandler {
 
     @Override
     protected void onInsert(List<CanalEntry.Column> afterColumnsLt) {
-        log.info("ffffffffffffffffffffffffdsa");
+        log.info("onInsertonInsert");
     }
 
     @Override
     protected void onDelete(List<CanalEntry.Column> beforeColumnsLt) {
         beforeColumnsLt.forEach(e -> {
         });
-        log.info("ffffffffffffffffffffffffdsa");
+        log.info("onDeleteonDelete");
     }
 
     @Override
     protected void onUpdate(List<CanalEntry.Column> beforeColumnsLt, List<CanalEntry.Column> afterColumnsLt) {
-        log.info("ffffffffffffffffffffffffdsa");
+        log.info("onUpdateonUpdate");
     }
 }

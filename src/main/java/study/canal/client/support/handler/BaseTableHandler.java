@@ -10,7 +10,9 @@ import java.util.List;
 public abstract class BaseTableHandler implements TableHandler {
 
     @Override
-    public final void doHandle(Context context, List<CanalEntry.Column> beforeColumnsLt, List<CanalEntry.Column> afterColumnsLt) {
+    public final void doHandle(Context context,
+                               List<CanalEntry.Column> beforeColumnsLt,
+                               List<CanalEntry.Column> afterColumnsLt) {
         try {
             CanalEntry.EventType eventType = context.getEventType();
             if (eventType == CanalEntry.EventType.INSERT) {
