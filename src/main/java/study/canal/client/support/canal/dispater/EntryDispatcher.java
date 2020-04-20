@@ -5,9 +5,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.protobuf.ByteString;
 import lombok.extern.slf4j.Slf4j;
-import study.canal.client.support.canal.EntryContext;
 import study.canal.client.support.blogic.BLogic;
 import study.canal.client.support.blogic.BLogicFactory;
+import study.canal.client.support.canal.EntryContext;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,7 +24,7 @@ public class EntryDispatcher {
             CanalEntry.EntryType.TRANSACTIONEND);
 
     private static ThreadFactory THREAD_FACTORY = new ThreadFactoryBuilder()
-            .setNameFormat("pool-handler-thread-%d")
+            .setNameFormat("POOL-BLOGIC-THREAD-%d")
             .build();
 
     private static ThreadPoolExecutor POOL = new ThreadPoolExecutor(10, 10,
@@ -65,19 +65,19 @@ public class EntryDispatcher {
                 //事件类型
                 CanalEntry.EventType eventType = rowChange.getEventType();
                 log.info("bin_log[{}:{}], name[{}:{}], event_type[{}]", logfileName, logfileOffset, schemaName, tableName, eventType);
-                //行数据
+                //行数据列表
                 List<CanalEntry.RowData> rowDataLt = rowChange.getRowDatasList();
 
                 BLogic bLogic = BLogicFactory.loadBLogic(tableName);
                 if(bLogic == null){
-                    log.warn("not found handler of table[{}]", tableName);
+                    log.warn("not found BLogic of table[{}]", tableName);
                     continue;
                 }
-                EntryContext context = new EntryContext(schemaName, tableName, eventType);
+                EntryContext entryContext = new EntryContext(schemaName, tableName, eventType);
                 rowDataLt.forEach(data -> {
                     List<CanalEntry.Column> beforeColumnsLt = data.getBeforeColumnsList();
                     List<CanalEntry.Column> afterColumnsLt = data.getAfterColumnsList();
-                    bLogic.processBLogic(context, beforeColumnsLt, afterColumnsLt);
+                    bLogic.processBLogic(entryContext, beforeColumnsLt, afterColumnsLt);
                 });
             } catch (Exception ex) {
                 log.error("", ex);
