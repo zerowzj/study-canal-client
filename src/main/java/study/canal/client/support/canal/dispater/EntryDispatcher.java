@@ -67,8 +67,8 @@ public class EntryDispatcher {
                 List<CanalEntry.RowData> rowDataLt = rowChange.getRowDatasList();
                 POOL.submit(() -> {
                     rowDataLt.forEach(data -> {
-                        List<CanalEntry.Column> beforeColumnLt = data.getBeforeColumnsList();
-                        List<CanalEntry.Column> afterColumnLt = data.getAfterColumnsList();
+                        List<CanalEntry.Column> beforeColumnsLt = data.getBeforeColumnsList();
+                        List<CanalEntry.Column> afterColumnsLt = data.getAfterColumnsList();
                     });
                 });
             } catch (Exception ex) {

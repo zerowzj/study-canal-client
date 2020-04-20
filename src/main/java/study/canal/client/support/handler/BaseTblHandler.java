@@ -6,18 +6,18 @@ import java.util.List;
 
 public abstract class BaseTblHandler implements TblHandler {
 
-    public final void doHandle(List<CanalEntry.Column> beforeColumnLt,
-                               List<CanalEntry.Column> afterColumnLt) {
+    public final void doHandle(List<CanalEntry.Column> beforeColumnsLt,
+                               List<CanalEntry.Column> afterColumnsLt) {
         try {
-            whenInsert();
-
-            whenUpdate();
-
-            whenDelete();
+            if (1 == 1) {
+                whenInsert();
+            } else if (1 == 1) {
+                whenDelete();
+            } else if (1 == 1) {
+                whenUpdate();
+            }
         } catch (Exception ex) {
-
         } finally {
-
         }
     }
 }
