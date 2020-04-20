@@ -7,7 +7,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-public class CanalSpringClient extends CanalClient implements ApplicationContextAware, InitializingBean, DisposableBean {
+public class SpringCanalClient extends CanalClient implements ApplicationContextAware, InitializingBean, DisposableBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
