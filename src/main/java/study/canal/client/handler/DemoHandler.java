@@ -20,5 +20,8 @@ public class DemoHandler extends BaseTableHandler {
 
     @Override
     protected void onDelete(List<CanalEntry.Column> beforeColumnsLt) {
+        beforeColumnsLt.forEach(e -> {
+        });
+        log.info("ffffffffffffffffffffffffdsa");
     }
 }
