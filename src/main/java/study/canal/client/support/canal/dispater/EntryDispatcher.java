@@ -6,8 +6,8 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.protobuf.ByteString;
 import lombok.extern.slf4j.Slf4j;
 import study.canal.client.support.EntryContext;
-import study.canal.client.support.handler.TableHandler;
-import study.canal.client.support.handler.TableHandlerFactory;
+import study.canal.client.support.blogic.BLogic;
+import study.canal.client.support.blogic.BLogicFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -68,8 +68,8 @@ public class EntryDispatcher {
                 //行数据
                 List<CanalEntry.RowData> rowDataLt = rowChange.getRowDatasList();
 
-                TableHandler tableHandler = TableHandlerFactory.loadTableHandler(tableName);
-                if(tableHandler == null){
+                BLogic bLogic = BLogicFactory.loadBLogic(tableName);
+                if(bLogic == null){
                     log.warn("not found handler of table[{}]", tableName);
                     continue;
                 }
@@ -77,7 +77,7 @@ public class EntryDispatcher {
                 rowDataLt.forEach(data -> {
                     List<CanalEntry.Column> beforeColumnsLt = data.getBeforeColumnsList();
                     List<CanalEntry.Column> afterColumnsLt = data.getAfterColumnsList();
-                    tableHandler.doHandle(context, beforeColumnsLt, afterColumnsLt);
+                    bLogic.processBLogic(context, beforeColumnsLt, afterColumnsLt);
                 });
             } catch (Exception ex) {
                 log.error("", ex);

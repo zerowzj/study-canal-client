@@ -1,4 +1,4 @@
-package study.canal.client.support.handler;
+package study.canal.client.support.blogic;
 
 import com.alibaba.otter.canal.protocol.CanalEntry;
 import lombok.extern.slf4j.Slf4j;
@@ -7,12 +7,12 @@ import study.canal.client.support.EntryContext;
 import java.util.List;
 
 @Slf4j
-public abstract class BaseTableHandler implements TableHandler {
+public abstract class BaseBLogic implements BLogic {
 
     @Override
-    public final void doHandle(EntryContext entryContext,
-                               List<CanalEntry.Column> beforeColumnsLt,
-                               List<CanalEntry.Column> afterColumnsLt) {
+    public final void processBLogic(EntryContext entryContext,
+                                    List<CanalEntry.Column> beforeColumnsLt,
+                                    List<CanalEntry.Column> afterColumnsLt) {
         try {
             CanalEntry.EventType eventType = entryContext.getEventType();
             if (eventType == CanalEntry.EventType.INSERT) {
