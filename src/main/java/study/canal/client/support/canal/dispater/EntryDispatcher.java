@@ -46,12 +46,11 @@ public class EntryDispatcher {
             try {
                 //（★）实体类型
                 CanalEntry.EntryType entryType = entry.getEntryType();
-                log.info("entry_type={}", entryType);
                 if (ENTRY_TYPE_IGNORE_LT.contains(entryType)) {
-                    log.warn("11");
+                    log.warn("ignore entry type [{}]", entryType);
                     continue;
                 }
-
+                log.info("process entry type [{}]", entryType);
                 //（★）实体头部
                 CanalEntry.Header header = entry.getHeader();
                 String logfileName = header.getLogfileName();
@@ -59,7 +58,7 @@ public class EntryDispatcher {
                 String schemaName = header.getSchemaName();
                 String tableName = header.getTableName();
 
-                //（★）实体存储值，即行变化：事件类型、行数据
+                //（★）实体存储值，即行变化：事件类型、行数据列表
                 ByteString byteString = entry.getStoreValue();
                 CanalEntry.RowChange rowChange = CanalEntry.RowChange.parseFrom(byteString);
                 //事件类型
