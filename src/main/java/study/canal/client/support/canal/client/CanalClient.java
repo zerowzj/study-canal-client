@@ -25,11 +25,11 @@ public class CanalClient {
 
     /* 监听端口 */
     private int port = 11111;
-    /*  */
+    /* 目的地 */
     private String destination;
-    /* 用户名 */
+    /* 用户名和密码 */
     private String username = "";
-    /* 密码 */
+
     private String password = "";
     /* 过滤规则 -订阅所有库下面的所有表*/
 //    private String filter = ".*\\..*";
