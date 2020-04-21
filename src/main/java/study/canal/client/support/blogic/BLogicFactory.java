@@ -46,7 +46,6 @@ public class BLogicFactory implements ApplicationContextAware, InitializingBean 
         }
     }
 
-
     public static BLogic registerBLogic(String name, BLogic bLogic) {
         log.info(">>>>>>>>>> register BLogic, {}:{}", name, bLogic.getClass().getName());
         return BLOGIC_REPOSITORY.put(name, bLogic);
