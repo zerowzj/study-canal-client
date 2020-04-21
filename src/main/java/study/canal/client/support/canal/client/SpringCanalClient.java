@@ -4,17 +4,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
-import java.util.concurrent.Executors;
-
 @Slf4j
 public class SpringCanalClient extends CanalClient implements InitializingBean, DisposableBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Executors.newSingleThreadExecutor().execute(() -> {
+        /*
+         * 使用线程异步启动，否则会阻塞于此
+         */
+        Thread t = new Thread(() -> {
             super.connect();
-        });
-        log.info("start");
+        }, "START-THREAD");
+        t.start();
     }
 
     @Override

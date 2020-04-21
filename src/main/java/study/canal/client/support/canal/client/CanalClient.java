@@ -64,6 +64,9 @@ public class CanalClient {
             //设置回滚
             connector.rollback();
 
+            log.info("====================");
+            log.info("canal client start on port {}", port);
+            log.info("====================");
             while (running) {
                 //获取指定数量的数据
                 Message message = connector.getWithoutAck(batchSize);
