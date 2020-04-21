@@ -11,6 +11,18 @@
 5. 业务cache刷新
 6. 带业务逻辑的增量数据处理
 
+几个概念
+
+1. instance
+
+   对应canal-server里的instance，一个最小的订阅mysql的队列
+
+2. server
+
+   对应canal-server，一个server里可以包含多个instance
+
+3. 集群，对应一组canal-server，组合在一起面向高可用HA的运维
+
 # 二. 工作原理
 
 ## 2.1 MySQL主备复制原理

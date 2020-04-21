@@ -12,14 +12,45 @@
 
 ## 2.1 canal配置
 
+1. 通用
+
+   ```properties
+   #可选项: tcp(默认), kafka, rocketmq
+   canal.serverMode=kafka
+   
+   canal.mq.servers=127.0.0.1:6667
+   canal.mq.retries=0
+   ```
+
+2. kafka配置
+
+   ```properties
+   #
+   canal.mq.batchSize
+   canal.mq.maxRequestSize
+   canal.mq.lingerMs
+   ```
+
+   
+
+3. 阿斯顿发斯蒂芬
+
 ```properties
-#可选项: tcp(默认), kafka, RocketMQ
-canal.serverMode=kafka
+
+canal.mq.batchSize = 16384
+canal.mq.maxRequestSize = 1048576
+canal.mq.lingerMs = 100
+canal.mq.bufferMemory = 33554432
+canal.mq.canalBatchSize = 50
+canal.mq.canalGetTimeout = 100
+canal.mq.flatMessage = true
+canal.mq.compressionType = none
+canal.mq.acks = all
 ```
 
 
 
-## 2.1 instance配置
+## 2.2 instance配置
 
 ```properties
 #
