@@ -29,7 +29,6 @@ public class CanalClient {
     private String destination;
     /* 用户名和密码 */
     private String username = "";
-
     private String password = "";
     /* 过滤规则 -订阅所有库下面的所有表*/
 //    private String filter = ".*\\..*";
